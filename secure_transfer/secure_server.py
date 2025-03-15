@@ -5,42 +5,49 @@
 import socket
 from cryptography.fernet import Fernet
 
+#loads encryption key from secret.key
 def load_key():
     return open("secret.key", "rb").read()
 
+#decrypts file using fernet
 def decrypt_file(file_name):
     key = load_key()
     fernet = Fernet(key)
 
-    with open(file_name, "rb") as encrypted file:
+    #opens encrypted file to read contents
+    with open(file_name, "rb") as encrypted_file:
         encrypted_data = encrypted_file.read()
 
     decrypted_data = fernet.decrypt(encrypted_data)
 
-    with open("decrypted_" + file_name[:-4], "wb") as decrypted file:
+    with open("decrypted_" + file_name[:-4], "wb") as decrypted_file:
         decrypted_file.write(decrypted_data)
 
     print(f"{file_name} decrypted successfully. ")
 
 #server code
 def start_server():
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(('0.0.0.0', 65432))
-    server_socket.listen(1)
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #create tcp socket
+    server_socket.bind(('0.0.0.0', 65432)) #bind server to available interfaces
+    server_socket.listen(1) #listen for incoming connections
     print("Server is listening for incoming connections...")
 
+    #accept client connection
     conn, addr = server_socket.accept()
     print(f"Connected by {addr}")
 
+    #open file to save received data
     with open("received_file.enc", "wb") as f:
         while True:
-            data = connn.recv(1024)
+            data = conn.recv(1024) #receive data in 1024 byte chunks
             if not data:
                 break
             f.write(data)
-    
+    #close the client connection
     conn.close()
     print("File received. Decrypting now...")
+
+    #decryp;t received file
     decrypt_file("received_file.enc")
 
 if __name__ == "__main__":
