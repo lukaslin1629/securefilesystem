@@ -36,6 +36,9 @@ def start_server():
     conn, addr = server_socket.accept()
     print(f"Connected by {addr}")
 
+    file_hash = conn.recv(64).decode('utf-8')  # SHA-256 hash is decoded
+    print(f"Received file hash: {file_hash}")
+
     #open file to save received data
     with open("received_file.enc", "wb") as f:
         while True:
@@ -46,6 +49,15 @@ def start_server():
     #close the client connection
     conn.close()
     print("File received. Decrypting now...")
+
+     received_file_hash = compute_file_hash("received_file.enc")
+    print(f"Received file hash (computed): {received_file_hash}")
+
+    # Verify file integrity
+    if file_hash == received_file_hash:
+        print("File integrity verified.")
+    else:
+        print("File integrity check failed: The file may be corrupted or tampered with.")
 
     #decrypt received file
     decrypt_file("received_file.enc")

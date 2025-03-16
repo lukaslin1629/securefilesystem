@@ -34,6 +34,8 @@ def send_file(file_name):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect(('127.0.0.1', 65432))
 
+    client_socket.sendall(file_hash.encode('utf-8'))
+
     #opens file and sends contents
     with open(file_name, "rb") as f:
         data = f.read()
