@@ -4,6 +4,7 @@
 
 import socket
 from cryptography.fernet import Fernet
+from .secure_client import compute_file_hash
 
 #loads encryption key from secret.key
 def load_key():
@@ -50,7 +51,7 @@ def start_server():
     conn.close()
     print("File received. Decrypting now...")
 
-     received_file_hash = compute_file_hash("received_file.enc")
+    received_file_hash = compute_file_hash("received_file.enc")
     print(f"Received file hash (computed): {received_file_hash}")
 
     # Verify file integrity

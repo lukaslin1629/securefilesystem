@@ -17,17 +17,17 @@ def load_users():
             reader = csv.reader(file)
             for row in reader:
                 un, hashed_pw = row
-                user_db[un] = hashed_pw.encode("utf-8")
+                user_db[un] = bytes.fromhex(hashed_pw) #returns as bytes correctly
     return user_db
 
 # save a new user to the CSV file
 def save_user(un, hashed_pw):
     with open(CSV_FILE, mode="a", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow([un, hashed_pw.decode("utf-8")])  # Store as string
+        writer.writerow([un, hashed_pw.hex()])  # Store as string
 
 # register a new user
-def reg_user(user_db, un, pw):
+def register_user(user_db, un, pw):
     # generate a salt and hash the password
     salt = bcrypt.gensalt()
     hashed_pw = bcrypt.hashpw(pw.encode("utf-8"), salt)
@@ -41,7 +41,7 @@ def reg_user(user_db, un, pw):
         print(f"User {un} registered successfully.")
 
 # authenticate user
-def login_user(user_db, un, pw):
+def authenticate_user(user_db, un, pw):
     # check if un exists
     if un in user_db:
         # retrieve stored hashed pw
@@ -50,31 +50,9 @@ def login_user(user_db, un, pw):
         # compare provided pw with stored hash
         if bcrypt.checkpw(pw.encode("utf-8"), stored_pw):
             print(f"User {un} logged in successfully.")
+            return True
         else:
             print("Invalid password.")
     else:
         print("Username not found.")
-
-# command-line interface for testing
-"""def main():
-    user_db = load_users()  # load users from CSV file
-    while True:
-        print("\n1. Register\n2. Login\n3. Exit")
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            un = input("Enter username: ")
-            pw = input("Enter password: ")
-            reg_user(user_db, un, pw)
-        elif choice == "2":
-            un = input("Enter username: ")
-            pw = input("Enter password: ")
-            login_user(user_db, un, pw)
-        elif choice == "3":
-            break
-        else:
-            print("Invalid choice. Try again.")
-
-if __name__ == "__main__":
-    main()
-"""
+    return False
