@@ -37,7 +37,7 @@ def decrypt_file(encrypted_file_name):
     fernet = Fernet(key)
 
     with open(encrypted_file_name, "rb") as encrypted_file:
-        encrypted_data = encrypted_file.read()
+        encrypted_data = encrypted_file.read() #read encrypted file
 
     decrypted_data = fernet.decrypt(encrypted_data)
 
@@ -46,25 +46,3 @@ def decrypt_file(encrypted_file_name):
         decrypted_file.write(decrypted_data)
 
     print(f"{encrypted_file_name} has been decrypted to {decrypted_file_name}")
-
-# user input menu
-def main():
-    while True:
-        print("\n1. Generate Key\n2. Encrypt File\n3. Decrypt File\n4. Exit")
-        choice = input("Choose an option: ")
-
-        if choice == '1':
-            generate_key()
-        elif choice == '2':
-            file_name = input("Enter the file name to encrypt: ")
-            encrypt_file(file_name)
-        elif choice == '3':
-            encrypted_file_name = input("Enter the encrypted file name to decrypt: ")
-            decrypt_file(encrypted_file_name)
-        elif choice == '4':
-            break
-        else:
-            print("Invalid choice. Enter a value 1-4.")
-
-if __name__ == "__main__":
-    main()

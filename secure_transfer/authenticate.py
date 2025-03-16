@@ -51,12 +51,12 @@ def login_user(user_db, un, pw):
         if bcrypt.checkpw(pw.encode("utf-8"), stored_pw):
             print(f"User {un} logged in successfully.")
         else:
-            print("Invalid passwordw    .")
+            print("Invalid password.")
     else:
         print("Username not found.")
 
 # command-line interface for testing
-def main():
+"""def main():
     user_db = load_users()  # load users from CSV file
     while True:
         print("\n1. Register\n2. Login\n3. Exit")
@@ -77,3 +77,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+"""

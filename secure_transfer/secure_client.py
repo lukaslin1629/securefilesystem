@@ -42,15 +42,3 @@ def send_file(file_name):
     #closes socket connection 
     print("File sent successfully.")
     client_socket.close()
-
-if __name__ == "__main__":
-    file_to_send = "example.txt"
-    encrypt_file(file_to_send)
-
-    # Compute and save hash of original file
-    file_hash = compute_file_hash(file_to_send)
-    with open("received_hash.txt", "w") as hash_file:
-        hash_file.write(file_hash)
-
-    print(f"SHA-256 Hash of {file_to_send}: {file_hash}")
-    send_file(file_to_send + ".enc")

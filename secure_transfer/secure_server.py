@@ -47,8 +47,5 @@ def start_server():
     conn.close()
     print("File received. Decrypting now...")
 
-    #decryp;t received file
+    #decrypt received file
     decrypt_file("received_file.enc")
-
-if __name__ == "__main__":
-    start_server()
