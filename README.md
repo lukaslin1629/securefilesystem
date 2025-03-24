@@ -2,6 +2,7 @@
 These files make up a secure server/client that will allow a user to create an account to send, store, and retrieve encrypted files. The end goal will have the user able to access files from a password protected server accessible from anyone with the secure client.
 
 Use: Run application.py in terminal to run the main application
+
 Terminal: python3 application.py
 
 A menu will appear asking you to register or login, create an account using the numbered options and entering a username and password.
